@@ -2,9 +2,7 @@
 
 Plugins de pedais para o HO-Tone Assistant (editor web de pedaleiras com assistente de IA). Cada plugin ensina o app a falar com um pedal: quais módulos e efeitos ele tem, quais bytes SysEx enviar e como ler o estado de volta.
 
-## Instalar um plugin (para quem só quer usar)
-
-Você não precisa instalar nada além do navegador: use **Chrome** ou **Edge** (Firefox e Safari não falam com pedais por USB).
+## Instalar um plugin 
 
 1. **Baixe o plugin.** Abra a página de [**Releases**](https://github.com/ricardojlrufino/ho-tone-assistant-pedals/releases), escolha o seu pedal e baixe o arquivo `.zip` que aparece em *Assets* (por exemplo `valeton-gp5-50-0.1.0.zip`). Cada pedal tem o seu próprio release.
 2. **Descompacte o `.zip`.** Aparece uma pasta com o nome do plugin (por exemplo `valeton-gp5-50`), com dois arquivos dentro: `plugin.json` e `index.js`. Se o navegador não deixar escolher a pasta `Downloads` no passo seguinte, mova essa pasta para outro lugar, como a área de trabalho.
@@ -13,9 +11,6 @@ Você não precisa instalar nada além do navegador: use **Chrome** ou **Edge** 
 
 Para **atualizar**, baixe o release novo e repita o passo 3: instalar de novo o mesmo plugin troca o antigo. Para **remover** ou desativar, use **Instalar novo Pedal** e os botões do plugin na lista.
 
-| Plugin | Pedais |
-|---|---|
-| `valeton-gp5-50` | Valeton GP-5 e GP-50 (experimental, ainda não validado no pedal de verdade) |
 
 > **Cuidado:** um plugin roda dentro da página do app, com acesso a tudo que ela guarda (inclusive chaves de IA). Instale só plugins de quem você confia.
 >

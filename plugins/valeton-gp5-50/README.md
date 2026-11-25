@@ -36,6 +36,3 @@ src/
 ├── gp5-50.test.ts         # decodificação, nomes, sync com enlace simulado, perfis
 ```
 
-## Se um dia chegar hardware
-
-Valide primeiro: o select por CC no GP-5, o tamanho do corpo `0x41` (466/511 bytes) e a ordem dos blocos. Depois, leia/escreva um comando por vez, como em [docs/testes-e-validacao.md](../../docs/testes-e-validacao.md).
