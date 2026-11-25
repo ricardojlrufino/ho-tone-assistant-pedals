@@ -64,12 +64,24 @@ Instale `dist/acme-stomp` no app marcando **Modo desenvolvedor**: a cada gravaç
 
 A etapa mais trabalhosa é descobrir o protocolo. A ferramenta [**midi-sysex-webdebug**](https://github.com/ricardojlrufino/midi-sysex-webdebug) ([abrir online](https://ricardojlrufino.github.io/midi-sysex-webdebug/)) captura as mensagens SysEx direto no navegador, reagrupa as fragmentadas, junta as que chegam na mesma ação, deixa rotular cada pacote ("liga o DLY", "preset 5", "Time = 400 ms") e exporta tudo em Markdown ou JSON. Esse arquivo vira a tabela de comandos do seu plugin. Veja [docs/capturando-midi.md](docs/capturando-midi.md).
 
+## Skills para o Claude Code
+
+Este repositório traz dois skills (pasta `.claude/skills/`) que o Claude Code carrega ao abrir o projeto:
+
+| Skill | Para quê |
+|---|---|
+| [`capturar-protocolo-usb`](.claude/skills/capturar-protocolo-usb/SKILL.md) | Captura do protocolo de um pedal no **Windows** com Wireshark/USBPcap. O agente lê o USB **ao vivo** e vai dizendo ao usuário o que fazer no pedal, passo a passo, rotulando cada mensagem e comparando os bytes que mudam. |
+| [`portar-pedal-de-codigo-fonte`](.claude/skills/portar-pedal-de-codigo-fonte/SKILL.md) | Cria um plugin quando já existe o código-fonte de um app que controla o pedal (por exemplo o [CubeControl](https://github.com/MrGariZack/cubecontrol-app), do Cuvave Cube Baby): extrai o protocolo com licença e segurança, mapeia para o `DeviceProfile` e gera o plugin com testes. |
+
+Peça direto ao Claude Code, por exemplo: "vamos capturar o protocolo do meu pedal" ou "crie um plugin a partir deste repositório: <URL>". Detalhes da captura em [docs/capturando-midi.md](docs/capturando-midi.md).
+
 ## Comandos
 
 ```bash
 bun run build       # compila todos os plugins de plugins/ para dist/
 bun run dev         # idem, recompilando a cada mudança em plugins/ e sdk/
 bun run new <id> "<Nome>"   # novo plugin a partir do template
+bun run capture ...  # leitor ao vivo da captura USB (veja docs/capturando-midi.md)
 bun run pack <id>   # compila e gera release/<id>-<versão>.zip (o que o release publica)
 bun run test        # testes dos plugins e do template
 bun run typecheck   # tsc --noEmit

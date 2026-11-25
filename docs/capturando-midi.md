@@ -14,6 +14,33 @@ Quase todo pedal com editor para computador conversa por **SysEx** sobre USB-MID
 
 Ela só escuta. Para ver também o que o **editor oficial envia** ao pedal, veja "Capturando os dois sentidos" abaixo.
 
+## Captura assistida no Windows (Wireshark/USBPcap)
+
+Para ver **os dois sentidos** (o que o editor oficial manda e o que o pedal responde) no Windows, o caminho é o [Wireshark](https://www.wireshark.org/) com o **USBPcap** (marque a opção no instalador e reinicie o Windows). O repositório traz um leitor que decodifica o USB-MIDI **em tempo real** (`scripts/capture/`) e um skill do Claude Code que conduz a captura, dizendo ao usuário o que fazer no pedal a cada passo:
+
+```text
+> vamos capturar o protocolo do meu pedal
+```
+
+O skill [`capturar-protocolo-usb`](../.claude/skills/capturar-protocolo-usb/SKILL.md) faz o seguinte, e você também pode usar as ferramentas à mão:
+
+```bat
+scripts\capture\capture.cmd list                       :: interfaces USBPcap
+scripts\capture\capture.cmd 1 meu-pedal --list         :: acha o dispositivo do pedal (mexa nos botões)
+scripts\capture\capture.cmd 1 meu-pedal --device 5     :: captura ao vivo (grava captures\meu-pedal\)
+```
+
+Em outro terminal, a cada ação do usuário:
+
+```bash
+bun run mark meu-pedal "DLY liga"        # o que ele vai fazer agora
+bun run mark meu-pedal --                # repouso (o que chegar aqui é ruído de fundo)
+bun run report meu-pedal --last          # mensagens do último passo
+bun run report meu-pedal --compare "DLY liga" "DLY desliga"   # bytes que mudam
+```
+
+O `captures/<sessão>/raw.pcapng` é a cópia fiel (abre no Wireshark) e `events.jsonl` tem uma linha por mensagem. `captures/` não vai para o Git. Para treinar sem pedal: `bun scripts/capture/demo.ts | bun scripts/capture/live.ts ensaio`.
+
 ## Roteiro de captura
 
 Capture **uma coisa de cada vez** e rotule logo depois: no meio de 200 pacotes sem rótulo não dá para lembrar o que era o quê.

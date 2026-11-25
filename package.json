@@ -10,7 +10,10 @@
     "new": "bun scripts/new-plugin.ts",
     "pack": "bun scripts/pack-plugin.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "capture": "bun scripts/capture/live.ts",
+    "mark": "bun scripts/capture/mark.ts",
+    "report": "bun scripts/capture/report.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.2.0",
