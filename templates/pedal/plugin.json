@@ -1,0 +1,9 @@
+{
+  "id": "example-pedal",
+  "name": "Example Pedal",
+  "version": "0.1.0",
+  "apiVersion": 1,
+  "entry": "index.js",
+  "description": "Descreva em uma frase o que o plugin faz e se é experimental.",
+  "devices": ["example-pedal"]
+}

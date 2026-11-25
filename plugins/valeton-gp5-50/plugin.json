@@ -1,0 +1,9 @@
+{
+  "id": "valeton-gp5-50",
+  "name": "Valeton GP-5 / GP-50",
+  "version": "0.1.0",
+  "apiVersion": 1,
+  "entry": "index.js",
+  "description": "Controle, leitura de preset e assistente de IA para o Valeton GP-5 e GP-50 (experimental).",
+  "devices": ["gp5", "gp50"]
+}

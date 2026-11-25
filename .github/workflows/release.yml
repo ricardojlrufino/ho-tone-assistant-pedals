@@ -1,0 +1,59 @@
+name: Release do plugin
+
+# Cada plugin tem o próprio release, criado por uma tag `<id-do-plugin>-v<versão>`:
+#   git tag valeton-gp5-50-v0.1.0 && git push origin valeton-gp5-50-v0.1.0
+# A versão da tag tem de ser a do plugins/<id>/plugin.json.
+on:
+  push:
+    tags:
+      - '*-v[0-9]*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ler o plugin e a versão da tag
+        id: meta
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          echo "id=${tag%-v*}" >> "$GITHUB_OUTPUT"
+          echo "version=${tag##*-v}" >> "$GITHUB_OUTPUT"
+
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+
+      - name: Testar
+        run: |
+          bun run typecheck
+          bun run test
+
+      - name: Compilar e empacotar
+        run: bun run pack "${{ steps.meta.outputs.id }}" --expect-version "${{ steps.meta.outputs.version }}"
+
+      - name: Publicar o release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PLUGIN_ID: ${{ steps.meta.outputs.id }}
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          name="$(jq -r .name "plugins/${PLUGIN_ID}/plugin.json")"
+          description="$(jq -r '.description // ""' "plugins/${PLUGIN_ID}/plugin.json")"
+          cat > notes.md <<NOTES
+          ${description}
+
+          **Como instalar:** descompacte o .zip e, no HO-Tone Assistant, abra **Instalar novo Pedal** → **Instalar de uma pasta…** e escolha a pasta \`${PLUGIN_ID}\`.
+
+          Um plugin roda dentro da página do app, com acesso a tudo que ela guarda. Instale só plugins de quem você confia.
+          NOTES
+          prerelease=()
+          if [[ "${VERSION}" == *-* ]]; then prerelease=(--prerelease); fi
+          gh release create "${GITHUB_REF_NAME}" "release/${PLUGIN_ID}-${VERSION}.zip" \
+            --title "${name} ${VERSION}" \
+            --notes-file notes.md \
+            --generate-notes \
+            "${prerelease[@]}"
